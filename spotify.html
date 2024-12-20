@@ -3,71 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotifyランキングトップ10</title>
+    <title>Spotify Top 10</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            background-color: #f4f4f9;
+            text-align: center;
         }
-        ul {
-            list-style: none;
-            padding: 0;
+        .top-songs {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
         }
-        li {
-            margin: 10px 0;
+        .song {
+            background-color: #222;
+            color: white;
+            width: 80%;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .song img {
+            height: 50px;
+            width: 50px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .song-info {
+            flex: 1;
+        }
+        .song-info h4 {
+            margin: 0;
+        }
+        .song-info p {
+            margin: 0;
+            font-size: 12px;
+        }
+        .song-number {
+            font-weight: bold;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
-    <h1>Spotifyランキングトップ10</h1>
-    <ul id="ranking"></ul>
-    <script>
-        // Spotify APIの情報
-const clientId = '3b79e357c055448dbb4ca36e691ec946';
-const clientSecret = 'e86e1f33502b414b9d2eaddafeeffd6d';
 
-// トークンを取得する関数
-async function getAccessToken() {
-    const response = await fetch('https://accounts.spotify.com/api/token', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: 'Basic ' + btoa(clientId + ':' + clientSecret),
-        },
-        body: 'grant_type=client_credentials',
-    });
-    const data = await response.json();
-    return data.access_token;
-}
+    <div class="top-songs">
+        <h2>今週の人気曲トップ10</h2>
+        <!-- ランキングの曲をここに表示 -->
+        <div id="songList"></div>
+    </div>
 
-// トップ10トラックを取得する関数
-async function getTopTracks(token) {
-    const response = await fetch('https://api.spotify.com/v1/playlists/37i9dQZEVXbNG2KDcFcKOF', {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    const data = await response.json();
-    return data.tracks.items.slice(0, 10); // トップ10トラックを取得
-}
-
-// HTMLにランキングを表示
-async function displayTopTracks() {
-    const token = await getAccessToken();
-    const tracks = await getTopTracks(token);
-    const rankingElement = document.getElementById('ranking');
-
-    tracks.forEach((track, index) => {
-        const li = document.createElement('li');
-        li.textContent = `${index + 1}. ${track.track.name} by ${track.track.artists.map(artist => artist.name).join(', ')}`;
-        rankingElement.appendChild(li);
-    });
-}
-
-// ページ読み込み時にランキングを表示
-displayTopTracks();
-
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
+
 
